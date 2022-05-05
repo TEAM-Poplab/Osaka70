@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1893448595, guid: a040fb66244a7f54289914d98ea4ef7d, type: 3}
+  m_Name: ButtonFollowMe
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"graph":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":19.8754,"y":16.73708},"zoom":0.9,"elements":[{"specifyFallback":false,"kind":"Scene","defaultValues":{"name":{"$content":"UIManager","$type":"System.String"}},"position":{"x":31.0,"y":13.0},"guid":"a6b9f8a7-5493-47c9-8aa5-d177967c877f","$version":"A","$type":"Bolt.GetVariable","$id":"9"},{"chainable":false,"member":{"name":"SetPosition","parameterTypes":[],"targetType":"UIManagerForUserMenuMRTKWithoutButtonsOsaka","targetTypeName":"UIManagerForUserMenuMRTKWithoutButtonsOsaka","$version":"A"},"defaultValues":{"target":null},"position":{"x":25.0,"y":-115.0},"guid":"c32f232c-64c4-43db-8b47-650b95a4226a","$version":"A","$type":"Bolt.InvokeMember","$id":"11"},{"coroutine":false,"defaultValues":{"name":{"$content":"OnPress","$type":"System.String"}},"position":{"x":-449.0,"y":-110.0},"guid":"404a2b50-33ab-43d2-a07b-b2132e752e3d","$version":"A","$type":"Bolt.BoltNamedAnimationEvent","$id":"14"},{"defaultValues":{},"position":{"x":-174.0,"y":-109.0},"guid":"d24739ad-f170-4adb-810a-de593536d07d","$version":"A","$type":"Bolt.Branch","$id":"16"},{"member":{"name":"isTourEnabled","parameterTypes":null,"targetType":"TourManager","targetTypeName":"TourManager","$version":"A"},"defaultValues":{"target":null},"position":{"x":-360.0,"y":78.0},"guid":"c28ec59e-00f2-44e4-b58d-09535e166c60","$version":"A","$type":"Bolt.GetMember","$id":"18"},{"specifyFallback":false,"kind":"Scene","defaultValues":{"name":{"$content":"TourManager","$type":"System.String"}},"position":{"x":-553.0,"y":119.0},"guid":"e5aa36e0-3482-4ef4-89d5-77c21103dda1","$version":"A","$type":"Bolt.GetVariable","$id":"21"},{"sourceUnit":{"$ref":"14"},"sourceKey":"trigger","destinationUnit":{"$ref":"16"},"destinationKey":"enter","guid":"f0d676e7-87ed-41b1-adc1-fa528f16da8b","$type":"Bolt.ControlConnection"},{"sourceUnit":{"$ref":"16"},"sourceKey":"ifFalse","destinationUnit":{"$ref":"11"},"destinationKey":"enter","guid":"9196d384-d116-418c-ad89-eddff2a589ce","$type":"Bolt.ControlConnection"},{"sourceUnit":{"$ref":"9"},"sourceKey":"value","destinationUnit":{"$ref":"11"},"destinationKey":"target","guid":"b7994f5d-ac7d-4f40-8e9e-f70b6e745732","$type":"Bolt.ValueConnection"},{"sourceUnit":{"$ref":"18"},"sourceKey":"value","destinationUnit":{"$ref":"16"},"destinationKey":"condition","guid":"ecb83b63-f893-41fd-ac88-cf40f2888f51","$type":"Bolt.ValueConnection"},{"sourceUnit":{"$ref":"21"},"sourceKey":"value","destinationUnit":{"$ref":"18"},"destinationKey":"target","guid":"d31939d5-7e8b-4b9b-96c2-e5205e27d372","$type":"Bolt.ValueConnection"}],"$version":"A"}}'
+    _objectReferences: []

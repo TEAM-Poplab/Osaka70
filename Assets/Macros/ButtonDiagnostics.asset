@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1893448595, guid: a040fb66244a7f54289914d98ea4ef7d, type: 3}
+  m_Name: ButtonDiagnostics
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"graph":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":-222.8614,"y":-39.74435},"zoom":1.0,"elements":[{"specifyFallback":false,"kind":"Scene","defaultValues":{"name":{"$content":"UIManager","$type":"System.String"}},"position":{"x":-262.0,"y":-74.0},"guid":"ef9e583d-51a8-453b-bb75-fd15840d09ee","$version":"A","$type":"Bolt.GetVariable","$id":"9"},{"chainable":false,"member":{"name":"DiagnosticHandler","parameterTypes":["System.Boolean"],"targetType":"UIManagerForUserMenuMRTKWithoutButtonsOsaka","targetTypeName":"UIManagerForUserMenuMRTKWithoutButtonsOsaka","$version":"A"},"defaultValues":{"target":null,"%isActive":{"$content":true,"$type":"System.Boolean"}},"position":{"x":-91.0,"y":-249.0},"guid":"bd75c84e-ad6c-4c52-a155-4330ddaa79fb","$version":"A","$type":"Bolt.InvokeMember","$id":"11"},{"chainable":false,"member":{"name":"DiagnosticHandler","parameterTypes":["System.Boolean"],"targetType":"UIManagerForUserMenuMRTKWithoutButtonsOsaka","targetTypeName":"UIManagerForUserMenuMRTKWithoutButtonsOsaka","$version":"A"},"defaultValues":{"target":null,"%isActive":{"$content":false,"$type":"System.Boolean"}},"position":{"x":-88.0,"y":64.0},"guid":"493242a0-ed0f-417a-bee0-02173bf75c89","$version":"A","$type":"Bolt.InvokeMember","$id":"14"},{"coroutine":false,"defaultValues":{"name":{"$content":"OnToggleOn","$type":"System.String"}},"position":{"x":-345.0,"y":-248.0},"guid":"d227ae58-f322-4465-a348-d8060f23374d","$version":"A","$type":"Bolt.BoltNamedAnimationEvent","$id":"17"},{"coroutine":false,"defaultValues":{"name":{"$content":"OnToggleOff","$type":"System.String"}},"position":{"x":-342.0,"y":64.0},"guid":"e86d6238-d843-4f7e-a5a6-a2c54371f633","$version":"A","$type":"Bolt.BoltNamedAnimationEvent","$id":"19"},{"sourceUnit":{"$ref":"17"},"sourceKey":"trigger","destinationUnit":{"$ref":"11"},"destinationKey":"enter","guid":"2d8ea131-6865-440d-b771-6f7419429728","$type":"Bolt.ControlConnection"},{"sourceUnit":{"$ref":"19"},"sourceKey":"trigger","destinationUnit":{"$ref":"14"},"destinationKey":"enter","guid":"56a3e843-24d3-41c3-b48a-81c34f88e80b","$type":"Bolt.ControlConnection"},{"sourceUnit":{"$ref":"9"},"sourceKey":"value","destinationUnit":{"$ref":"11"},"destinationKey":"target","guid":"8ca23f3d-aea8-45b3-8a17-0115e477d000","$type":"Bolt.ValueConnection"},{"sourceUnit":{"$ref":"9"},"sourceKey":"value","destinationUnit":{"$ref":"14"},"destinationKey":"target","guid":"1afc5b6c-7696-4651-9056-4678d4bef292","$type":"Bolt.ValueConnection"}],"$version":"A"}}'
+    _objectReferences: []

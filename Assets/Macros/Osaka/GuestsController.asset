@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1893448595, guid: a040fb66244a7f54289914d98ea4ef7d, type: 3}
+  m_Name: GuestsController
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"graph":{"variables":{"collection":{"$content":[],"$version":"A"},"$version":"A"},"controlInputDefinitions":[],"controlOutputDefinitions":[],"valueInputDefinitions":[],"valueOutputDefinitions":[],"title":null,"summary":null,"pan":{"x":119.7699,"y":5.735733},"zoom":1.0,"elements":[{"coroutine":false,"defaultValues":{"name":{"$content":"EnableGuests","$type":"System.String"}},"position":{"x":-295.0,"y":-18.0},"guid":"6772cd43-d46d-4490-8473-ad9ce5fa89d1","$version":"A","$type":"Bolt.BoltUnityEvent","$id":"9"},{"argumentCount":0,"defaultValues":{"name":{"$content":"EnableGuests","$type":"System.String"},"target":null},"position":{"x":-101.0,"y":-37.0},"guid":"e9ce3004-ad8c-4360-ba63-3e6045dc547a","$version":"A","$type":"Bolt.TriggerCustomEvent","$id":"11"},{"specifyFallback":false,"kind":"Application","defaultValues":{"name":{"$content":"NormcoreManager","$type":"System.String"}},"position":{"x":-123.0,"y":108.0},"guid":"c99196f2-77a0-4786-9d79-e5b9ce272b49","$version":"A","$type":"Bolt.GetVariable","$id":"13"},{"sourceUnit":{"$ref":"9"},"sourceKey":"trigger","destinationUnit":{"$ref":"11"},"destinationKey":"enter","guid":"fdf0f128-b89d-4a21-af50-61243fed09e8","$type":"Bolt.ControlConnection"},{"sourceUnit":{"$ref":"13"},"sourceKey":"value","destinationUnit":{"$ref":"11"},"destinationKey":"target","guid":"8002d1a6-23af-4e7b-a721-7db7ab0d854e","$type":"Bolt.ValueConnection"}],"$version":"A"}}'
+    _objectReferences: []
