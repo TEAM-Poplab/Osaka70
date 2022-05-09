@@ -132,7 +132,7 @@ public class GameManagerOsaka : Singleton<GameManagerOsaka>, IMixedRealityTelepo
         if (_centerCameraAnchor == null)
         {
             _centerCameraAnchor = GameObject.Find("MixedRealityPlayspace/MRTK-Quest_OVRCameraRig(Clone)/TrackingSpace/CenterEyeAnchor");
-            SetCameraWithBeautify(_centerCameraAnchor);
+            //SetCameraWithBeautify(_centerCameraAnchor);
         }
 
         //if (IsLightChangeButtonActive)

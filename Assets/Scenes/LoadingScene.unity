@@ -27606,6 +27606,7 @@ GameObject:
   - component: {fileID: 1080324182}
   - component: {fileID: 1080324186}
   - component: {fileID: 1080324185}
+  - component: {fileID: 1080324187}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -27780,6 +27781,23 @@ MonoBehaviour:
     _json: '{"declarations":{"collection":{"$content":[{"name":"Buttons","value":{"$content":0,"$type":"UnityEngine.Object"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
     _objectReferences:
     - {fileID: 1794415092}
+--- !u!114 &1080324187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080324177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cb4d9bd051a71f48a18edd27bce7c19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  threshold: 0.5
+  intensity: 1
+  blurSize: 1
+  blurIterations: 2
+  fastBloomMaterial: {fileID: 2100000, guid: 221340b8b5ad10940ba1646f87e3770c, type: 2}
 --- !u!21 &1084327166
 Material:
   serializedVersion: 6
