@@ -33,6 +33,12 @@ public class NormcoreConnectionManager : MonoBehaviour
         room.connectionStateChanged += Room_connectionStateChanged;
     }
 
+    /// <summary>
+    /// Invoked if the connection state to the Room changes
+    /// </summary>
+    /// <param name="room"></param>
+    /// <param name="previousConnectionState"></param>
+    /// <param name="connectionState"></param>
     private void Room_connectionStateChanged(Room room, Room.ConnectionState previousConnectionState, Room.ConnectionState connectionState)
     {
         Debug.LogError("From " + previousConnectionState + " to " + connectionState);
@@ -60,6 +66,14 @@ public class NormcoreConnectionManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This coroutine tries to reconnect client to the Room for a specified amount of times
+    /// </summary>
+    /// <param name="tryTime">Seconds to try reconnecting</param>
+    /// <param name="deltaTryTime"></param>
+    /// <param name="roomName"></param>
+    /// <param name="realtime"></param>
+    /// <returns></returns>
     IEnumerator TryReconnection(int tryTime, float deltaTryTime, string roomName, Realtime realtime)
     {
         int timer = 0;

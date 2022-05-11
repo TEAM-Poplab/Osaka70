@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Normal.Realtime;
 
+/// <summary>
+/// This Normocre class manages the scene swtiching, properly setting variables and properties that reside in gameobject in other scenes
+/// </summary>
 public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSceneManagerModel>
 {
     public int osakaConnectedUsers = 0;
@@ -60,6 +63,12 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
         }
     }
 
+    /// <summary>
+    /// Invoked when a client disconnects and their avatar is detroyed on other clients
+    /// </summary>
+    /// <param name="avatarManager"></param>
+    /// <param name="avatar"></param>
+    /// <param name="isLocalAvatar"></param>
     private void RealtimeNormcoreSceneManager_avatarDestroyed(RealtimeAvatarManager avatarManager, RealtimeAvatar avatar, bool isLocalAvatar)
     {     
         if (RemoveUserSceneByID(avatar.realtimeView.ownerIDInHierarchy)) {
@@ -71,6 +80,10 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
         }
     }
 
+    /// <summary>
+    /// Invoked when a client connects to the Room, and it's added to the users list for the scene he's connecting to
+    /// </summary>
+    /// <param name="realtime"></param>
     private void RealtimeNormcoreSceneManager_didConnectToRoom(Realtime realtime)
     {
         AddUserSceneSelf();
@@ -97,7 +110,7 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
 
         if (currentModel != null)
         {
-            // If this is a model that has no data set on it,
+            // If this is a model that has no data set on it
             if (currentModel.isFreshModel)
             {
                 currentModel.loadingScreenMainConnectedUsers = 0;   //The user who starts the connection
@@ -109,8 +122,6 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
             currentModel.loadingScreenSecondaryConnectedUsersDidChange += CurrentModel_loadingScreenSecondaryConnectedUsersDidChange;
             currentModel.osakaConnectedUSersDidChange += CurrentModel_osakaConnectedUSersDidChange;
 
-            //currentModel.loadingScreenMainConnectedUsers = currentModel.loadingScreenMainConnectedUsers + 1; //At the beginning, users will always be in the loading scene
-
             osakaConnectedUsers = currentModel.osakaConnectedUSers;
             loadingSceneConnectedUsers = currentModel.loadingScreenMainConnectedUsers;
             loadingScenePostOsakaConnectedUsers = currentModel.loadingScreenSecondaryConnectedUsers;
@@ -119,6 +130,11 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
         }
     }
 
+    /// <summary>
+    /// Invoked when the number of current users in Osaka changes, and it updates visual counter
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="value"></param>
     private void CurrentModel_osakaConnectedUSersDidChange(RealtimeNormcoreSceneManagerModel model, int value)
     {
         Debug.Log("New user connected to LoadingScreen scene! " + value + " users currently connected.");
@@ -132,6 +148,11 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
         }
     }
 
+    /// <summary>
+    /// Invoked when the number of current users in second loading scene changes, and it updates visual counter
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="value"></param>
     private void CurrentModel_loadingScreenSecondaryConnectedUsersDidChange(RealtimeNormcoreSceneManagerModel model, int value)
     {
         Debug.Log("New user connected to LoadingScreen scene! " + value + " users currently connected.");
@@ -160,6 +181,11 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
        }        
     }
 
+    /// <summary>
+    /// Invoked when the number of current users in second loading scene changes, and it updates visual counter
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="value"></param>
     private void CurrentModel_loadingSceneMainConnectedUsersDidChange(RealtimeNormcoreSceneManagerModel model, int value)
     {
         Debug.Log("New user connected to Osaka scene! " + value + " users currently connected.");

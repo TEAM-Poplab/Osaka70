@@ -5,9 +5,13 @@ using Ludiq;
 using Bolt;
 using Normal.Realtime;
 
+/// <summary>
+/// This class handles a group of clients that visit Osaka as visitors: usually Osaka can be visited by a guide and a small amount of clients that are vleft free to move.
+/// This class enables the presence of a alrge number of clients (up to 15) and allows to guide to easly manage them, locking their movement.
+/// </summary>
 public class TourManager : MonoBehaviour
 {
-    public bool isTourEnabled = false;
+    [Tooltip("Toggle to globally set the tour mode")] public bool isTourEnabled = false;
     public List<GameObject> floorsVisitorsSpotsGroup = new List<GameObject>();
     private List<List<Transform>> indexedSpotGroups = new List<List<Transform>>();
     private int _localVisitorIndex = 0;
@@ -25,12 +29,6 @@ public class TourManager : MonoBehaviour
         //Teleport for visitor has to be disabled at the very first beginning
         //StartCoroutine(DisableTeleport(1f));
         StartCoroutine(EnableGodVoice(0.5f));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private List<Transform> IndexSpotGroup(GameObject spotGroup)
@@ -71,7 +69,6 @@ public class TourManager : MonoBehaviour
     {
         index = index > 15 ? 15 : index;
         index = index < 0 ? 0 : index;
-        //return indexedSpotGroups[floor][index - 1];
         return floorsVisitorsSpotsGroup[floor].transform.GetChild(index);
     }
 
@@ -96,6 +93,11 @@ public class TourManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Allows guide to disable spatial audio for its own voice and be heard by all other clients whenever they are in Osaka
+    /// </summary>
+    /// <param name="timer"></param>
+    /// <returns></returns>
     IEnumerator EnableGodVoice(float timer)
     {
         yield return new WaitForSeconds(timer);

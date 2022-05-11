@@ -74,7 +74,6 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
     // Start is called before the first frame update
     void Start()
     {
-        //HideDock();
         playspace = GameObject.Find("MixedRealityPlayspace");
         var normcore = GameObject.Find("NormcoreManager");
         normcoreCoreRT = normcore.GetComponent<Realtime>();
@@ -83,14 +82,14 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
         normcoreCoreNS = normcore.GetComponent<NavigationSync>();
         normcoreCoreRNSM = normcore.GetComponent<RealtimeNormcoreSceneManager>();
         normcoreCoreRNTM = normcore.GetComponent<RealtimeNormcoreTourManager>();
-        //normcoreCoreRT.didConnectToRoom += NormcoreCore_didConnectToRoom;
-        //NormcoreCore_didConnectToRoom(normcoreCoreRT);
-        //normcoreCoreRAM.avatarDestroyed += NormcoreCoreRAM_avatarDestroyed;
-        //normcoreCoreRAM.avatarCreated += NormcoreCoreRAM_avatarCreated;
-
-        //RecallButton.GetComponent<PressableButtonHoloLens2>().ButtonPressed.AddListener(normcore.GetComponent<RealtimeNormcoreStatus>().SetGuideIsReady);
     }
 
+    /// <summary>
+    /// Actions to do when a new avatar is created after a new client connects to the Room
+    /// </summary>
+    /// <param name="avatarManager"><see cref="RealtimeAvatarManager"/></param>
+    /// <param name="avatar"><see cref="RealtimeAvatar"/></param>
+    /// <param name="isLocalAvatar">If is local client</param>
     private void NormcoreCoreRAM_avatarCreated(RealtimeAvatarManager avatarManager, RealtimeAvatar avatar, bool isLocalAvatar)
     {
         if (!isLocalAvatar)
@@ -104,6 +103,12 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
         }
     }
 
+    /// <summary>
+    /// Actions to do when an avatar is destroyed
+    /// </summary>
+    /// <param name="avatarManager"><see cref="RealtimeAvatarManager"/></param>
+    /// <param name="avatar"><see cref="RealtimeAvatar"/></param>
+    /// <param name="isLocalAvatar">If is local client</param>
     private void NormcoreCoreRAM_avatarDestroyed(RealtimeAvatarManager avatarManager, RealtimeAvatar avatar, bool isLocalAvatar)
     {
         if (!isLocalAvatar)
@@ -142,36 +147,6 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
 
     }
 
-    public void DockHandler()
-    {
-        switch (isDockActive)
-        {
-            case true:
-                HideDock();
-                //dockButtonText.color = new Color32(128, 128, 128, 255);
-                break;
-            case false:
-                ShowDock();
-                //dockButtonText.color = new Color32(255, 255, 255, 255);
-                break;
-        }
-    }
-
-    public void ClockHandler()
-    {
-        switch (digitalClockObject.activeSelf)
-        {
-            case true:
-                digitalClockObject.SetActive(false);
-                //clockButtonText.color = new Color32(128, 128, 128, 255);
-                break;
-            case false:
-                digitalClockObject.SetActive(true);
-                //clockButtonText.color = new Color32(255, 255, 255, 255);
-                break;
-        }
-    }
-
     public void ExitHandler()
     {
         if (normcoreCoreRT.clientID == normcoreCoreRNS.guideID)
@@ -180,24 +155,6 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
         }
         ScenesManager.Instance.LoadLevelByIndex(2);
         ScenesManager.Instance.ActivateScene();
-    }
-
-    private void HideDock()
-    {
-        dockObject.GetComponent<Orbital>().enabled = false;
-        dockPreviousPosition = dockObject.transform.position;
-        dockPreviousScale = dockObject.transform.localScale;
-        dockObject.transform.position = Vector3.zero;
-        dockObject.transform.localScale = new Vector3(.01f, .01f, .01f);
-        isDockActive = false;
-    }
-
-    private void ShowDock()
-    {
-        dockObject.GetComponent<Orbital>().enabled = true;
-        dockObject.transform.position = dockPreviousPosition;
-        dockObject.transform.localScale = dockPreviousScale;
-        isDockActive = true;
     }
 
     public void DiagnosticHandler()
@@ -256,6 +213,11 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
         StartCoroutine(TeleportCoroutine(position));  
     }
 
+    /// <summary>
+    /// Creates a destination offset before starting the actual teleport, then force the playspace to move to destination
+    /// </summary>
+    /// <param name="position">Position where teleport the player to</param>
+    /// <returns>IEnumerator</returns>
     IEnumerator TeleportCoroutine(Transform position)
     {
         yield return new WaitForSeconds(0.5f);
@@ -293,6 +255,11 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
         StartCoroutine(TeleportCoroutine(position, obj));
     }
 
+    /// <summary>
+    /// Creates a destination offset before starting the actual teleport, then force the playspace to move to destination
+    /// </summary>
+    /// <param name="position">Position where teleport the player to</param>
+    /// <returns>IEnumerator</returns>
     IEnumerator TeleportCoroutine(Transform position, GameObject obj)
     {
         Debug.LogWarning("Teleport coroutine started. Guide is " + normcoreCoreRNS.guideID + "and client is" + normcoreCoreRT.clientID);
@@ -335,22 +302,18 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
         StartCoroutine(TeleportTourCoroutine(position));
     }
 
+    /// <summary>
+    /// Creates a destination offset before starting the actual teleport, then force the playspace to move to destination
+    /// </summary>
+    /// <param name="position">Position where teleport the player to</param>
+    /// <returns>IEnumerator</returns>
     IEnumerator TeleportTourCoroutine(Transform position)
     {
-        //if (normcoreCoreRT.clientID != normcoreCoreRNS.guideID)
-        //{
-        //    if (!normcoreCoreRNTM.GetTeleportStatus())
-        //    {
-        //        normcoreCoreRNTM.EnableTeleportLocally();
-        //    }
-        //}
-        //Debug.LogWarning("Teleport coroutine started. Guide is " + normcoreCoreRNS.guideID + "and client is" + normcoreCoreRT.clientID);
         yield return new WaitForSeconds(0.5f);
         CustomEvent.Trigger(GameObject.FindGameObjectWithTag("Fade"), "BlinkTour"); //Fade when changin spot
         yield return new WaitForSeconds(0.65f);
         playspace.transform.position = position.position;
-        CustomEvent.Trigger(playspace, "Teleport", position.position);
-        //StartCoroutine(DisableTeleportAfterMoving(.8f));        
+        CustomEvent.Trigger(playspace, "Teleport", position.position);     
     }
 
     public void SetAudioButton()
@@ -397,33 +360,9 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
     }
 
     /// <summary>
-    /// Called on scene loading to identify guide and guests, 
+    /// Called on scene loading to identify guide and guests 
     /// </summary>
     /// <param name="isVisible"></param>
-    //public void SetButtonsVisibility(bool isVisible)
-    //{
-    //    foreach(GameObject button in buttonsForGuideClient)
-    //    {
-    //        button.SetActive(isVisible);
-    //    }
-    //    foreach (GameObject button in devMenuButtonsForGuideClient)
-    //    {
-    //        button.SetActive(isVisible);
-    //    }
-    //    FollowMeButton.SetActive(isVisible);
-
-    //    //Recall is visibile only to the guide and only if there are users waiting
-    //    //if (normcoreCoreRNSM.LoadingScreenMainConnectedUsers + normcoreCoreRNSM.LoadingScreenSecondaryConnectedUsers > 0)
-    //    //{
-    //    //    RecallButton.SetActive(isVisible);
-    //    //} else
-    //    //{
-    //    //    RecallButton.SetActive(false);
-    //    //}        
-    //    buttonsForGuideClient[0].transform.parent.GetComponent<GridObjectCollection>().UpdateCollection();
-    //    devMenuButtonsForGuideClient[0].transform.parent.GetComponent<GridObjectCollection>().UpdateCollection();
-    //}
-
     public void SetButtonsVisibility(bool isVisible)
     {
         if (guideMenu.activeSelf != isVisible)
@@ -458,26 +397,45 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
         guideMenu.GetComponent<TourGuideClock>().ResetStopwatch();
     }
 
+    /// <summary>
+    /// Call the correspective method of <see cref="NavigationSync"/>
+    /// </summary>
     public void SetPosition()
     {
         normcoreCoreNS.SetPosition();
     }
 
+    /// <summary>
+    /// Set the floor for all clients and force them to teleport to that floor
+    /// </summary>
+    /// <param name="floor">Index of floor to teleport to</param>
     public void SetFloorTour(int floor)
     {
         normcoreCoreRNTM.SetFloor(floor);
     }
 
+    /// <summary>
+    /// Update the FPS text field
+    /// </summary>
+    /// <param name="val">The value to update to</param>
     public void UpdateFrames(int val)
     {
         framesTextField.text = val.ToString();
     }
 
+    /// <summary>
+    /// Update the waiting users text field
+    /// </summary>
+    /// <param name="val">The value to update to</param>
     public void UpdateWaitingUsers(int val)
     {
         waitingUsersTextField.text = val.ToString();
     }
 
+    /// <summary>
+    /// Update the Osaka users text field
+    /// </summary>
+    /// <param name="val">The value to update to</param>
     public void UpdateOsakaUsers(int val)
     {
         osakaUsersTextField.text = val.ToString();
@@ -486,20 +444,13 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
     public void SecretMenuOnPress()
     {
         var manager = GameObject.Find("NormcoreManager");
-        Debug.Log("SecretMenuOnPress: started");
+        //Debug.Log("SecretMenuOnPress: started");
 
         if (manager.GetComponent<RealtimeNormcoreStatus>().guideID == -1)
         {
             manager.GetComponent<RealtimeNormcoreStatus>().SetGuideID(manager.GetComponent<Realtime>().clientID);
-            Debug.Log($"SecretMenuOnPress: new guide ID is {manager.GetComponent<RealtimeNormcoreStatus>().guideID}, current user ID is {manager.GetComponent<Realtime>().clientID}");
-            //manager.GetComponent<RealtimeNormcoreStatus>().SetIsGuide(true);
+            //Debug.Log($"SecretMenuOnPress: new guide ID is {manager.GetComponent<RealtimeNormcoreStatus>().guideID}, current user ID is {manager.GetComponent<Realtime>().clientID}");
         }
-
-        //if (manager.GetComponent<Realtime>().clientID == manager.GetComponent<RealtimeNormcoreStatus>().guideID)
-        //{
-        //    manager.GetComponent<RealtimeNormcoreStatus>().SetIsGuide(true);
-        //    Debug.Log("SecretMenuOnPress: isGuide set to true");
-        //}
     }
 
     IEnumerator DisableTeleportAfterMoving(float timer)

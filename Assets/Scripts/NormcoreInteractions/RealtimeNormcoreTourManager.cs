@@ -5,6 +5,9 @@ using Normal.Realtime;
 using Ludiq;
 using Bolt;
 
+/// <summary>
+/// This Normcore class manages all variables and behaviours related to the tour system for Osaka (when users are a large number). Normcore model: <see cref="RealtimeNormcoreTourManagerModel"/>
+/// </summary>
 public class RealtimeNormcoreTourManager : RealtimeComponent<RealtimeNormcoreTourManagerModel>
 {
     public TourManager tourManager;
@@ -24,16 +27,13 @@ public class RealtimeNormcoreTourManager : RealtimeComponent<RealtimeNormcoreTou
         core = coreManager.GetComponent<Realtime>();
         coreStatusSaver = coreManager.GetComponent<NormcoreStatusSaverManager>();
         coreStatus = coreManager.GetComponent<RealtimeNormcoreStatus>();
-        //_uiManager = GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>();
-        //playSpace = GameObject.Find("MixedRealityPlayspace");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /// <summary>
+    /// Invoked when the floor variable in the model changes and changes some settings according to specific teleport location (for particular scenery)
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="floor"></param>
     private void FloorDidChange(RealtimeNormcoreTourManagerModel model, int floor)
     {
         if (core.clientID == coreStatus.guideID)
@@ -57,6 +57,11 @@ public class RealtimeNormcoreTourManager : RealtimeComponent<RealtimeNormcoreTou
         }
     }
 
+    /// <summary>
+    /// Invoked when the guide ends the tour: since users cannot use the exit portal as in the free motion experience, they are forced to exit
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="enabled"></param>
     private void IsTourEndedDidChange(RealtimeNormcoreTourManagerModel model, bool enabled)
     {
         GameObject[] users = GameObject.FindGameObjectsWithTag("NormcorePlayerHead");
@@ -77,24 +82,24 @@ public class RealtimeNormcoreTourManager : RealtimeComponent<RealtimeNormcoreTou
         }
     }
 
+    /// <summary>
+    /// Invoked when the teleport system is enabled or disabled by the guide for the visitors, allowing them to freely move aroud the scene
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="enabled"></param>
     private void TeleportDidChange(RealtimeNormcoreTourManagerModel model, bool enabled)
     {
         Debug.Log("Toggle: variable changed");
         if (coreManager.GetComponent<Realtime>().clientID != coreManager.GetComponent<RealtimeNormcoreStatus>().guideID)
         {
-            //GameObject fade = (GameObject)Variables.ActiveScene.Get("Fade");
             if (model.isTeleportEnabled)
             {
-                //CustomEvent.Trigger(playSpace, "EnableTeleport");
-                //Variables.Object(playSpace).Set("isTeleportAllowed", true);
                 navMeshIn.SetActive(true);
                 navMeshOut.SetActive(true);
                 Debug.Log("Toggle: variable set to" + Variables.Object(playSpace).Get("isTeleportAllowed"));
             }
             else
             {
-                //CustomEvent.Trigger(playSpace, "DisableTeleport");
-                //Variables.Object(playSpace).Set("isTeleportAllowed", false);
                 navMeshIn.SetActive(false);
                 navMeshOut.SetActive(false);
                 Debug.Log("Toggle: variable set to" + Variables.Object(playSpace).Get("isTeleportAllowed"));
@@ -130,6 +135,10 @@ public class RealtimeNormcoreTourManager : RealtimeComponent<RealtimeNormcoreTou
         }
     }
 
+    /// <summary>
+    /// Set the floor to teleport all visitors and the guide to
+    /// </summary>
+    /// <param name="floor">Floor index</param>
     public void SetFloor(int floor)
     {
         // Set the floor on the model
@@ -140,11 +149,18 @@ public class RealtimeNormcoreTourManager : RealtimeComponent<RealtimeNormcoreTou
         }
     }
 
+    /// <summary>
+    /// Tells to visitors to exit the experience, while the guide stays in Osaka waiting for other visitors
+    /// </summary>
     public void EndTour()
     {
         model.isTourEnded = true;
     }
 
+    /// <summary>
+    /// Set the teleport status for all visitors (guide has always teleport enabled)
+    /// </summary>
+    /// <param name="enabled"></param>
     public void ChangeTeleport(bool enabled)
     {
         model.isTeleportEnabled = enabled;
@@ -167,6 +183,11 @@ public class RealtimeNormcoreTourManager : RealtimeComponent<RealtimeNormcoreTou
         tourManager.SetLocalVisitorIndex(core.clientID);
     }
 
+    /// <summary>
+    /// Coroutine to reset the isTourEnded variable aftar all visitors has exited
+    /// </summary>
+    /// <param name="timer"></param>
+    /// <returns></returns>
     IEnumerator ResetTourEnding(float timer)
     {
         yield return new WaitForSeconds(timer);
@@ -175,16 +196,12 @@ public class RealtimeNormcoreTourManager : RealtimeComponent<RealtimeNormcoreTou
 
     public void EnableTeleportLocally()
     {
-        //CustomEvent.Trigger(playSpace, "EnableTeleport");
-        //Variables.Object(playSpace).Set("isTeleportAllowed", true);
         navMeshIn.SetActive(true);
         navMeshOut.SetActive(true);
     }
 
     public void DisableTeleportLocally()
     {
-        //CustomEvent.Trigger(playSpace, "DisableTeleport");
-        //Variables.Object(playSpace).Set("isTeleportAllowed", false);
         navMeshIn.SetActive(false);
         navMeshOut.SetActive(false);
     }

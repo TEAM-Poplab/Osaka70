@@ -32,10 +32,4 @@ public class AudioManager : Singleton<AudioManager>
     {
         currentSnapshot = outdoorBaseSnapshot;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

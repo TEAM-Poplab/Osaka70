@@ -5,6 +5,9 @@ using Normal.Realtime;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// This Normcore class handles the users' status and controls the start of the experience. Normcore model: <see cref="RealtimeNormcoreStatusModel"/>
+/// </summary>
 public class RealtimeNormcoreStatus : RealtimeComponent<RealtimeNormcoreStatusModel>
 {
     private Realtime realtime;
@@ -37,7 +40,7 @@ public class RealtimeNormcoreStatus : RealtimeComponent<RealtimeNormcoreStatusMo
 
         if (currentModel != null)
         {
-            // If this is a model that has no data set on it,
+            // If this is a model that has no data set on it
             if (currentModel.isFreshModel)
             {
                 currentModel.isGuide = false;
@@ -83,6 +86,11 @@ public class RealtimeNormcoreStatus : RealtimeComponent<RealtimeNormcoreStatusMo
         }
     }
 
+    /// <summary>
+    /// If guide changes during the experience
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="value"></param>
     private void CurrentModel_guideIDDidChange(RealtimeNormcoreStatusModel model, int value)
     {
         UpdateGuideID();
@@ -128,6 +136,11 @@ public class RealtimeNormcoreStatus : RealtimeComponent<RealtimeNormcoreStatusMo
         }
     }
 
+    /// <summary>
+    /// It's called when the guide is in Osaka and calls all other waiting clients
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="value"></param>
     private void CurrentModel_guideIsReadyDidChange(RealtimeNormcoreStatusModel model, bool value)
     {
         if (realtime.clientID != model.guideID && value)
@@ -180,6 +193,10 @@ public class RealtimeNormcoreStatus : RealtimeComponent<RealtimeNormcoreStatusMo
         }
     }
 
+    /// <summary>
+    /// Set the guide ID in the model
+    /// </summary>
+    /// <param name="id">The client ID which is going to be the guide ID</param>
     public void SetGuideID(int id)
     {
         model.guideID = id;
@@ -203,6 +220,9 @@ public class RealtimeNormcoreStatus : RealtimeComponent<RealtimeNormcoreStatusMo
         }
     }
 
+    /// <summary>
+    /// Reset the value of the guideIsReady property in the model for any new further call of the method
+    /// </summary>
     public void ResetGuideIsReady()
     {
         if (model.guideID != -1)
@@ -228,6 +248,13 @@ public class RealtimeNormcoreStatus : RealtimeComponent<RealtimeNormcoreStatusMo
         //onGuideIsReady.AddListener(GameObject.Find("ScenesManager").GetComponent<ScenesManager>().ActivateScene);
     }
 
+    /// <summary>
+    /// Coroutine called by each client when guideIsReady is changedto true: clients are moved to Osaka level
+    /// </summary>
+    /// <param name="totalTimer">Time before entering Osaka</param>
+    /// <param name="timeStep">Timescale</param>
+    /// <param name="delayBeforeStart">Delay before starting the coroutine</param>
+    /// <returns></returns>
     IEnumerator CooldownBeforeEnter(int totalTimer, int timeStep = 1, float delayBeforeStart = 0)
     {
         AudioSource aus = GameObject.Find("Countdown source").GetComponent<AudioSource>();

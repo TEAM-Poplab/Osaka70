@@ -84,6 +84,9 @@ public class UIManagerForUserMenuMRTKLoadingScene : Singleton<UIManagerForUserMe
         GuideButton.SetActive(status);
     }
 
+    /// <summary>
+    /// This method assign the guide authority to the user who confirmed the right password
+    /// </summary>
     public void GuideMenuOnPress()
     {
         var manager = GameObject.Find("NormcoreManager");
@@ -106,6 +109,9 @@ public class UIManagerForUserMenuMRTKLoadingScene : Singleton<UIManagerForUserMe
     //        () => GameObject.Find("ScenesManager").GetComponent<ScenesManager>().LoadLevel("Osaka"));
     //}
 
+    /// <summary>
+    /// This method assigns listeners to the event fired when the input password is right, allowing the activation of scene switching to main Osaka scene
+    /// </summary>
     public void ReSetGuideButton()
     {
         GuideButton.GetComponent<PasswordManager>().onPasswordIsRight.AddListener(() => GameObject.Find("MixedRealityPlayspace").GetComponent<Animator>().SetTrigger("Ascend"));

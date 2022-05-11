@@ -4,14 +4,14 @@
 *
 ************************************************************************************/
 
-using BeautifyEffect;
+//using BeautifyEffect;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using BeautifyEffect;
+//using BeautifyEffect;
 using System;
 using System.Runtime.CompilerServices;
 using TMPro;
@@ -27,7 +27,7 @@ using Ludiq;
 public class GameManagerOsaka : Singleton<GameManagerOsaka>, IMixedRealityTeleportHandler
 {
     //[SerializeField] private Beautify beautifyScript;
-    [SerializeField] private BeautifyProfile profile;
+    //[SerializeField] private BeautifyProfile profile;
     [SerializeField] private LoadingButtonMeshSequenceController _lightChangeButton;
     [SerializeField] private TextMeshProUGUI lightChangeButtonText;
     [SerializeField] private LoadingButtonMeshSequenceController _exitButton;
@@ -103,9 +103,6 @@ public class GameManagerOsaka : Singleton<GameManagerOsaka>, IMixedRealityTelepo
         {
             GameObject.Find("TimeManager").GetComponent<DigitalClockManager>().StartAutoIncrease();
         }
-        //_lightChangeButton.fillAmount = 0;
-        //_exitButton.fillAmount = 0;
-        //lightChangeButtonText.SetText(_osakaLightStatus == OsakaGameLight.DAY ? "Reality off" : "Reality on");
 
         //Normcore setting
         playspace = GameObject.Find("MixedRealityPlayspace");
@@ -118,14 +115,6 @@ public class GameManagerOsaka : Singleton<GameManagerOsaka>, IMixedRealityTelepo
         normcoreCoreRT.didConnectToRoom += NormcoreCore_didConnectToRoom;
     }
 
-    private void Start()
-    {
-        //normcoreCoreRAM.avatarDestroyed += NormcoreCoreRAM_avatarDestroyed;
-        //normcoreCoreRAM.avatarCreated += NormcoreCoreRAM_avatarCreated;
-
-
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -134,66 +123,12 @@ public class GameManagerOsaka : Singleton<GameManagerOsaka>, IMixedRealityTelepo
             _centerCameraAnchor = GameObject.Find("MixedRealityPlayspace/MRTK-Quest_OVRCameraRig(Clone)/TrackingSpace/CenterEyeAnchor");
             //SetCameraWithBeautify(_centerCameraAnchor);
         }
-
-        //if (IsLightChangeButtonActive)
-        //{
-        //    _lightChangeButton.fillAmount += 1.0f / 2.0f * Time.deltaTime;
-
-        //    if (Mathf.Clamp(_lightChangeButton.fillAmount, 0f, 1f) == 1f)
-        //    {
-        //        switch (_osakaLightStatus)
-        //        {
-        //            case OsakaGameLight.DAY:
-        //                _osakaLightStatus = OsakaGameLight.NIGHT;
-        //                water.SetActive(false);
-        //                lightGameObject.SetActive(false);
-        //                RenderSettings.skybox = nightSkybox;
-        //                foreach(GameObject go in meshes)
-        //                {
-        //                    go.GetComponent<MeshRenderer>().material = realityOffMaterial;
-        //                }
-        //                break;
-        //            case OsakaGameLight.NIGHT:
-        //                _osakaLightStatus = OsakaGameLight.DAY;
-        //                water.SetActive(true);
-        //                lightGameObject.SetActive(true);
-        //                RenderSettings.skybox = daySkybox;
-        //                foreach (GameObject go in meshes)
-        //                {
-        //                    go.GetComponent<MeshRenderer>().material = realityOnMaterial;
-        //                }
-        //                break;
-        //        }
-        //        lightChangeButtonText.SetText(_osakaLightStatus == OsakaGameLight.DAY ? "Reality off" : "Reality on");
-        //        _lightChangeButton.transform.parent.gameObject.SetActive(false); //hiding the button after it has changed the scene light
-        //        IsLightChangeButtonActive = false;
-        //    }
-        //}
-        //else
-        //{
-        //    _lightChangeButton.fillAmount = 0;
-        //}
-
-        //if (IsExitButtonActive)
-        //{
-        //    _exitButton.fillAmount += 1.0f / 2.0f * Time.deltaTime;
-        //    Debug.Log("Fill in manager" + _exitButton.fillAmount);
-
-        //    if (Mathf.Clamp(_exitButton.fillAmount, 0f, 1f) == 1f)
-        //    {
-        //        Debug.Log("Exit button loaded");
-        //        ScenesManager.Instance.LoadLevelSelectionScene();
-        //        _exitButton.transform.parent.gameObject.SetActive(false); //hiding the button after it has changed the scene light
-        //        IsExitButtonActive = false;
-        //        ScenesManager.Instance.ActivateScene();
-        //    }
-        //}
-        //else
-        //{
-        //    _exitButton.fillAmount = 0;
-        //}
     }
 
+    /// <summary>
+    /// Properly set Normcore when a client successfully connects to a room. It places the client to proper spawn location
+    /// </summary>
+    /// <param name="realtime"></param>
     public void NormcoreCore_didConnectToRoom(Realtime realtime)
     {
         if (tourManager.isTourEnabled)
@@ -244,39 +179,12 @@ public class GameManagerOsaka : Singleton<GameManagerOsaka>, IMixedRealityTelepo
      */
     private void SetCameraWithBeautify(GameObject cameraGO)
     {
-        if (!cameraGO.GetComponent<Beautify>())
-            cameraGO.AddComponent<Beautify>();
+        //if (!cameraGO.GetComponent<Beautify>())
+        //    cameraGO.AddComponent<Beautify>();
 
-        Beautify bf = cameraGO.GetComponent<Beautify>();
-        bf.profile = profile;
-        bf.quality = BEAUTIFY_QUALITY.BestPerformance;
-    }
-
-    public void OnLightChange()
-    {
-        switch (_osakaLightStatus)
-        {
-            case OsakaGameLight.DAY:
-                _osakaLightStatus = OsakaGameLight.NIGHT;
-                water.SetActive(false);
-                lightGameObject.SetActive(false);
-                RenderSettings.skybox = nightSkybox;
-                foreach (GameObject go in meshes)
-                {
-                    go.GetComponent<MeshRenderer>().material = realityOffMaterial;
-                }
-                break;
-            case OsakaGameLight.NIGHT:
-                _osakaLightStatus = OsakaGameLight.DAY;
-                water.SetActive(true);
-                lightGameObject.SetActive(true);
-                RenderSettings.skybox = daySkybox;
-                foreach (GameObject go in meshes)
-                {
-                    go.GetComponent<MeshRenderer>().material = realityOnMaterial;
-                }
-                break;
-        }
+        //Beautify bf = cameraGO.GetComponent<Beautify>();
+        //bf.profile = profile;
+        //bf.quality = BEAUTIFY_QUALITY.BestPerformance;
     }
 
     #region TeleportSystem

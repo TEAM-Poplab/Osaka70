@@ -25,16 +25,6 @@ public class NormcoreStatusSaverManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         GetComponent<Realtime>().didConnectToRoom += NormcoreStatusSaverManager_didConnectToRoom;
-        //SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
-        //currentSceneNormcoreManager = GameObject.Find("NormcoreManager");
-
-        //if (SceneManager.GetActiveScene().name == "LoadingScene")
-        //{
-
-        //} else if (SceneManager.GetActiveScene().name == "Osaka")
-        //{
-        //    GetComponent<Realtime>().didConnectToRoom += Osaka_didConnectToRoom;
-        //}
     }
 
     /// <summary>
@@ -68,22 +58,5 @@ public class NormcoreStatusSaverManager : MonoBehaviour
     private void NormcoreStatusSaverManager_didConnectToRoom(Realtime realtime)
     {
         internalClientID = realtime.clientID;
-    }
-
-    //private void Osaka_didConnectToRoom(Realtime realtime)
-    //{
-    //    GetComponent<RealtimeNormcoreStatus>().SetGuideHasEntered();
-
-    //    if (!GetComponent<RealtimeNormcoreStatus>().GetIsGuide())
-    //    {
-    //        GetComponent<RealtimeNormcoreStatus>().SetGuideID(GetComponent<Realtime>().clientID);
-    //        GetComponent<RealtimeNormcoreStatus>().SetIsGuide(true);
-    //    }
-    //}
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

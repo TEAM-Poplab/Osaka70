@@ -112,7 +112,6 @@ public class CustomLightManagerForOsaka : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //DontDestroyOnLoad(gameObject);
         _customDirectionalLight = GameObject.Find("Custom Directional Light").GetComponent<Light>();
         _customNightDirectionalLight = GameObject.Find("Custom Directional Light/Night Custom Directional Light").GetComponent<Light>();
         _sunObject = GameObject.Find("Custom Directional Light/Sun");
@@ -129,9 +128,6 @@ public class CustomLightManagerForOsaka : MonoBehaviour
         _sunOriginalColor = _sunObject.GetComponent<MeshRenderer>().material.color;
         cmScript = GetComponent<ClockManager>();
         dcmScript = GetComponent<DigitalClockManagerForOsaka>();
-        //CustomLightOnStart();
-        //GameManager.Instance.OnDayLightSet.AddListener(CustomLightOnStart);
-        //GameManager.Instance.OnNightLightSet.AddListener(CustomLightOnStart);
     }
 
     // Update is called once per frame
@@ -200,94 +196,7 @@ public class CustomLightManagerForOsaka : MonoBehaviour
                 sprite.GetComponent<SpriteRenderer>().color = Color.Lerp(sunColorAtSunset, _haloOriginalColor, _sunColorAnimation.Evaluate(Mathf.InverseLerp(dawnTime, duskTime, TimeOfDay)));
             }
 
-            //if (TimeOfDay == prevTimeOfDay)
-            //{
-            //stepTimeOfDay = Mathf.Lerp(TimeOfDay, TimeOfDay + ((Mathf.FloorToInt(dcmScript.minutesPerCycle) / 60) * 1f / 60f), cumulativeDeltaTime);
-            //RotateSun(stepTimeOfDay);
-            //cumulativeDeltaTime += Time.deltaTime;
-
-            //RotateSun(TimeOfDay);
-
-            /*
-            if (Mathf.Sin(cmScript.CurrentHoursHandRotationAngle * (Mathf.PI/180)) < 0f && Mathf.Sin(cmScript.PreviousHoursHandRotationAngle * (Mathf.PI / 180)) >= 0f && Mathf.Cos(cmScript.PreviousHoursHandRotationAngle * (Mathf.PI / 180)) >= 0.5f)
-            {
-                switch (previousPeriod)
-                {
-                    case Period.PM:
-                        currentPeriod = Period.AM;
-                        break;
-                    case Period.AM:
-                        currentPeriod = Period.PM;
-                        break;
-                }
-                previousPeriod = currentPeriod;
-            } else if (Mathf.Sin(cmScript.CurrentHoursHandRotationAngle * (Mathf.PI / 180)) >= 0f && Mathf.Sin(cmScript.PreviousHoursHandRotationAngle * (Mathf.PI / 180)) < 0 && Mathf.Cos(cmScript.PreviousHoursHandRotationAngle * (Mathf.PI / 180)) >= 0.5f)
-            {
-                switch (previousPeriod)
-                {
-                    case Period.AM:
-                        currentPeriod = Period.PM;
-                        break;
-                    case Period.PM:
-                        currentPeriod = Period.AM;
-                        break;
-                }
-                previousPeriod = currentPeriod;
-            }
-            */
-
-            //_customDirectionalLight.intensity = _sunIntensityAnimation.Evaluate(Mathf.InverseLerp(dawnTime, duskTime, stepTimeOfDay));
-            //if (stepTimeOfDay > duskTime)
-            //{
-            //    _customNightDirectionalLight.intensity = _moonIntensityAnimation.Evaluate(Mathf.InverseLerp(duskTime, 24, stepTimeOfDay) * 0.5f);
-            //}
-            //else if (stepTimeOfDay < dawnTime)
-            //{
-            //    _customNightDirectionalLight.intensity = _moonIntensityAnimation.Evaluate(Mathf.InverseLerp(0, dawnTime, stepTimeOfDay) * 0.5f + 0.5f);
-            //}
-            //RenderSettings.ambientIntensity = _environmentIntensityAnimation.Evaluate(Mathf.InverseLerp(0, 24, stepTimeOfDay));
-
-            //if (prevTimeOfDay < duskTime + offsetDusk && stepTimeOfDay >= duskTime + offsetDusk)
-            //{
-            //    RenderSettings.sun = _customNightDirectionalLight;
-            //}
-            //else if (prevTimeOfDay >= dawnTime + offsetDawn && stepTimeOfDay < dawnTime + offsetDawn)
-            //{
-            //    RenderSettings.sun = _customNightDirectionalLight;
-            //}
-            //else if (prevTimeOfDay >= duskTime + offsetDusk && stepTimeOfDay < duskTime + offsetDusk)
-            //{
-            //    RenderSettings.sun = _customDirectionalLight;
-            //}
-            //else if (prevTimeOfDay < dawnTime + offsetDawn && stepTimeOfDay >= dawnTime + offsetDawn)
-            //{
-            //    RenderSettings.sun = _customDirectionalLight;
-            //}
-
-            //_customDirectionalLight.color = Color.Lerp(sunColorAtSunset, _customDirectionalLightColor, _sunColorAnimation.Evaluate(Mathf.InverseLerp(dawnTime, duskTime, stepTimeOfDay)));
-            //_sunObject.GetComponent<MeshRenderer>().material.color = Color.Lerp(sunColorAtSunset, _sunOriginalColor, _sunColorAnimation.Evaluate(Mathf.InverseLerp(dawnTime, duskTime, stepTimeOfDay)));
-
-            //foreach (GameObject sprite in _haloList)
-            //{
-            //    sprite.GetComponent<SpriteRenderer>().color = Color.Lerp(sunColorAtSunset, _haloOriginalColor, _sunColorAnimation.Evaluate(Mathf.InverseLerp(dawnTime, duskTime, stepTimeOfDay)));
-            //}
-
-            //} else
-            //{
-            //    cumulativeDeltaTime = 0;
             prevTimeOfDay = TimeOfDay;
-            //}
-
-            //currentPeriod = dcmScript.CurrentPeriod;
-            //TimeOfDay = dcmScript.CurrentTime;
-
-            //if (angle >=0 && angle <= 5)
-            //{
-            //    if (GameObject.Find("NormcoreManager").GetComponent<Realtime>().clientID == GetComponent<LightSync>().GetLeastConnectedClientID())
-            //    {
-            //        GetComponent<LightSync>().SetForceLightSync(true);
-            //    }
-            //}
         }
     }
     #endregion
