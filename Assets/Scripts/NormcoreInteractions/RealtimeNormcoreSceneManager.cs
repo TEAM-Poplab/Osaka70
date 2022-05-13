@@ -12,6 +12,8 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
     public int osakaConnectedUsers = 0;
     public int loadingSceneConnectedUsers = 0;
     public int loadingScenePostOsakaConnectedUsers = 0;
+    public int totalConnectedUsers = 0;
+    public int totalWaitingUsers = 0;
 
     private UIManagerForUserMenuMRTKWithoutButtonsOsaka UIManagerOsaka;
 
@@ -77,6 +79,8 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
                 GetComponent<RealtimeNormcoreStatus>().SetGuideID(-1);
                 GetComponent<RealtimeNormcoreStatus>().SetIsGuide(false);
             }
+
+            DecreaseTotalUsers();
         }
     }
 
@@ -91,11 +95,14 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
         if (_currentScene == "LoadingScene")
         {
             AddUserSelfToQueue();
-            IncreaseMainLoadingSceneUsers();
+            // TODO: uncomment after new count test
+            // IncreaseMainLoadingSceneUsers();
         } else if (_currentScene == "Osaka")
         {
             IncreaseOsakaUsers();
         }
+
+        IncreaseTotalUsers();
     }
 
     protected override void OnRealtimeModelReplaced(RealtimeNormcoreSceneManagerModel previousModel, RealtimeNormcoreSceneManagerModel currentModel)
@@ -106,6 +113,7 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
             previousModel.loadingScreenMainConnectedUsersDidChange -= CurrentModel_loadingSceneMainConnectedUsersDidChange;
             previousModel.loadingScreenSecondaryConnectedUsersDidChange -= CurrentModel_loadingScreenSecondaryConnectedUsersDidChange;
             previousModel.osakaConnectedUSersDidChange -= CurrentModel_osakaConnectedUSersDidChange;
+            previousModel.totalConnectedUsersDidChange -= CurrentModel_totalConnectedUsersDidChange;
         }
 
         if (currentModel != null)
@@ -116,11 +124,14 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
                 currentModel.loadingScreenMainConnectedUsers = 0;   //The user who starts the connection
                 currentModel.loadingScreenSecondaryConnectedUsers = 0;
                 currentModel.osakaConnectedUSers = 0;
+                currentModel.totalConnectedUsers = 0;
+                currentModel.loadingScreensConnectedUSers = 0;
             }
 
             currentModel.loadingScreenMainConnectedUsersDidChange += CurrentModel_loadingSceneMainConnectedUsersDidChange;
             currentModel.loadingScreenSecondaryConnectedUsersDidChange += CurrentModel_loadingScreenSecondaryConnectedUsersDidChange;
             currentModel.osakaConnectedUSersDidChange += CurrentModel_osakaConnectedUSersDidChange;
+            currentModel.totalConnectedUsersDidChange += CurrentModel_totalConnectedUsersDidChange;
 
             osakaConnectedUsers = currentModel.osakaConnectedUSers;
             loadingSceneConnectedUsers = currentModel.loadingScreenMainConnectedUsers;
@@ -144,6 +155,7 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
             if (_currentScene == "Osaka")
             {
                 UIManagerOsaka.UpdateOsakaUsers(osakaConnectedUsers);
+                UIManagerOsaka.UpdateWaitingUsersNew(totalConnectedUsers - osakaConnectedUsers);
             }
         }
     }
@@ -164,6 +176,7 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
             if (_currentScene == "Osaka")
             {
                 UIManagerOsaka.UpdateWaitingUsers(loadingSceneConnectedUsers + loadingScenePostOsakaConnectedUsers);
+                UIManagerOsaka.UpdateWaitingUsersNew(totalConnectedUsers - osakaConnectedUsers);
 
                 if (loadingScenePostOsakaConnectedUsers + loadingSceneConnectedUsers > 0)
                 {
@@ -197,8 +210,45 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
             if (_currentScene == "Osaka")
             {
                 UIManagerOsaka.UpdateWaitingUsers(loadingSceneConnectedUsers + loadingScenePostOsakaConnectedUsers);
+                UIManagerOsaka.UpdateWaitingUsersNew(totalConnectedUsers - osakaConnectedUsers);
 
                 if (loadingScenePostOsakaConnectedUsers + loadingSceneConnectedUsers > 0)
+                {
+                    GetComponent<RealtimeNormcoreStatus>().ResetGuideIsReady();
+                    //GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>().SetRecallButtonVisbility(true);
+                    //TODO: renable when fixed
+                    //GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>().SetNewRecallFollomeButtonVisbility(true);
+                }
+                else
+                {
+                    //GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>().SetRecallButtonVisbility(false);
+                    //TODO: renable when fixed
+                    //GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>().SetNewRecallFollomeButtonVisbility(false);
+                    ClearQueue();
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Invoked when the number of total current users changes, and it updates visual counter
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="value"></param>
+    private void CurrentModel_totalConnectedUsersDidChange(RealtimeNormcoreSceneManagerModel model, int value)
+    {
+        Debug.Log("New user connected to Osaka scene! " + value + " users currently connected.");
+        loadingSceneConnectedUsers = value;
+
+        //Check if the user count in the loading scene is > 0 and if current user is the guide
+        if (realtime.clientID == GetComponent<RealtimeNormcoreStatus>().guideID)
+        {
+            if (_currentScene == "Osaka")
+            {
+                //UIManagerOsaka.UpdateWaitingUsers(loadingSceneConnectedUsers + loadingScenePostOsakaConnectedUsers);
+                UIManagerOsaka.UpdateWaitingUsersNew(totalConnectedUsers - osakaConnectedUsers);
+
+                if (model.totalConnectedUsers > 0)
                 {
                     GetComponent<RealtimeNormcoreStatus>().ResetGuideIsReady();
                     //GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>().SetRecallButtonVisbility(true);
@@ -245,7 +295,8 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
 
             if (_previousScene == "LoadingScene")
             {
-                DecreaseMainLoadingSceneUsers(); 
+                // TODO: uncomment after new count test
+                //DecreaseMainLoadingSceneUsers(); 
                 if (GetComponent<Realtime>().clientID == GetComponent<RealtimeNormcoreStatus>().guideID)
                 {
                     RemoveUserSelfFromQueue();
@@ -254,7 +305,8 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
             
             if (_previousScene == "LoadingScenePostOsaka")
             {
-                DecreasePostLoadingSceneUsers();
+                // TODO: uncomment after new count test
+                // DecreasePostLoadingSceneUsers();
             }
 
             GameObject.Find("GameManager").GetComponent<GameManagerOsaka>().NormcoreCore_didConnectToRoom(GetComponent<Realtime>());    //It sets the spawn position according to user ID and users number
@@ -292,7 +344,8 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
 
         if (_currentScene == "LoadingScenePostOsaka")
         {
-            IncreasePostLoadingSceneUsers();
+            // TODO: uncomment after new count test
+            //IncreasePostLoadingSceneUsers();
             AddUserSelfToQueue();
 
             GetComponent<RealtimeNormcoreStatus>().ReconnectEvent();
@@ -313,6 +366,36 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
 
             GameObject.Find("ScenesManager").GetComponent<ScenesManager>().LoadLevel("Osaka");
         }
+    }
+
+    public void IncreaseTotalUsers()
+    {
+        model.totalConnectedUsers = model.totalConnectedUsers + 1;
+        totalConnectedUsers = model.totalConnectedUsers;
+    }
+
+    public void DecreaseTotalUsers()
+    {
+        if (model.totalConnectedUsers >= 1)
+        {
+            model.totalConnectedUsers = model.totalConnectedUsers - 1;
+        }
+        totalConnectedUsers = model.totalConnectedUsers;
+    }
+
+    public void IncreaseTotalWaitingUsers()
+    {
+        model.loadingScreensConnectedUSers = model.loadingScreensConnectedUSers + 1;
+        totalWaitingUsers = model.loadingScreensConnectedUSers;
+    }
+
+    public void DecreaseTotalWaitingUsers()
+    {
+        if (model.loadingScreensConnectedUSers >= 1)
+        {
+            model.loadingScreensConnectedUSers = model.loadingScreensConnectedUSers - 1;
+        }
+        totalWaitingUsers = model.loadingScreensConnectedUSers;
     }
 
     public void DecreaseOsakaUsers()

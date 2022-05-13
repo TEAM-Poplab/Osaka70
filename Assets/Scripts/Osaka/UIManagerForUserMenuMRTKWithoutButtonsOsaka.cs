@@ -433,6 +433,15 @@ public class UIManagerForUserMenuMRTKWithoutButtonsOsaka : Singleton<UIManagerFo
     }
 
     /// <summary>
+    /// Update the waiting users text field
+    /// </summary>
+    /// <param name="val">The value to update to</param>
+    public void UpdateWaitingUsersNew(int val)
+    {
+        waitingUsersTextField.text = val.ToString();
+    }
+
+    /// <summary>
     /// Update the Osaka users text field
     /// </summary>
     /// <param name="val">The value to update to</param>

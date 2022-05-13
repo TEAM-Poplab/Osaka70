@@ -132,6 +132,7 @@ public class RealtimeNormcoreStatus : RealtimeComponent<RealtimeNormcoreStatusMo
             {
                 GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>().UpdateOsakaUsers(GetComponent<RealtimeNormcoreSceneManager>().osakaConnectedUsers);
                 GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>().UpdateWaitingUsers(GetComponent<RealtimeNormcoreSceneManager>().loadingSceneConnectedUsers + GetComponent<RealtimeNormcoreSceneManager>().loadingScenePostOsakaConnectedUsers);
+                GameObject.Find("UIManager").GetComponent<UIManagerForUserMenuMRTKWithoutButtonsOsaka>().UpdateWaitingUsersNew(GetComponent<RealtimeNormcoreSceneManager>().totalConnectedUsers - GetComponent<RealtimeNormcoreSceneManager>().osakaConnectedUsers);
             }
         }
     }
