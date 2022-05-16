@@ -136,6 +136,7 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
             osakaConnectedUsers = currentModel.osakaConnectedUSers;
             loadingSceneConnectedUsers = currentModel.loadingScreenMainConnectedUsers;
             loadingScenePostOsakaConnectedUsers = currentModel.loadingScreenSecondaryConnectedUsers;
+            totalConnectedUsers = currentModel.totalConnectedUsers;
 
             _currentScene = SceneManager.GetActiveScene().name;
         }
