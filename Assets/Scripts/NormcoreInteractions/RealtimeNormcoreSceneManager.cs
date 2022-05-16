@@ -237,8 +237,9 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
     /// <param name="value"></param>
     private void CurrentModel_totalConnectedUsersDidChange(RealtimeNormcoreSceneManagerModel model, int value)
     {
-        Debug.Log("New user connected to Osaka scene! " + value + " users currently connected.");
-        loadingSceneConnectedUsers = value;
+        //Debug.Log("New user connected to Osaka scene! " + value + " users currently connected.");
+        //loadingSceneConnectedUsers = value;
+        totalConnectedUsers = value;
 
         //Check if the user count in the loading scene is > 0 and if current user is the guide
         if (realtime.clientID == GetComponent<RealtimeNormcoreStatus>().guideID)
@@ -305,7 +306,7 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
             
             if (_previousScene == "LoadingScenePostOsaka")
             {
-                // TODO: uncomment after new count test
+                // TODO: uncomment after new count test.
                 // DecreasePostLoadingSceneUsers();
             }
 
@@ -370,8 +371,8 @@ public class RealtimeNormcoreSceneManager : RealtimeComponent<RealtimeNormcoreSc
 
     public void IncreaseTotalUsers()
     {
-        model.totalConnectedUsers = model.totalConnectedUsers + 1;
-        totalConnectedUsers = model.totalConnectedUsers;
+        model.totalConnectedUsers = totalConnectedUsers + 1;
+        //totalConnectedUsers = model.totalConnectedUsers;
     }
 
     public void DecreaseTotalUsers()
